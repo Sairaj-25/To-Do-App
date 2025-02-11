@@ -1,0 +1,22 @@
+.body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.dropdown-item {
+    font-size: 1rem; /* Reduce font size for dropdown items */
+}
+
+
+.custom-header {
+    background-color: #ea7bd7; /* Light grey */
+    border-bottom: 1px solid #ae3a81; /* Subtle border */
+    padding: 10px 15px;
+}
+
+.card-body {
+    background-color: #eda9e0de;
+}
+
+.custom-left {
+    margin-left: -20px;
+}

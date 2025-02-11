@@ -1,0 +1,145 @@
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to?do?</title>
+
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static '/style.css' %}">
+
+</head>
+<body>
+
+  <!-- header section -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="#">TO?DO?</a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav gap-5">
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Link</a>
+              </li>
+          </ul>
+
+          <!-- Right-Side Items (Search + User Dropdown) -->
+          <div class="d-flex ms-auto gap-5">
+              <!-- Search Form -->
+              <form class="d-flex" role="search" action="{% url 'search_task' %}" method="GET">
+                  <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+
+              <!-- User Dropdown -->
+              <div class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <i class="fas fa-user"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown" style="min-width: fit-content;">
+                      {% if user.is_authenticated %}
+                      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                      {% else %}
+                      <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                      <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                      {% endif %}
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</nav>
+
+
+      <div class="container mt-5">
+        <div class="row d-flex gap-3">
+            <div class="col-md-8 custom-left">
+          
+            {% if user.is_authenticated %}
+
+              {% for x in item_list %}
+                  <div class="card rounded-sm">
+                      <div class="custom-header d-flex justify-content-between align-items-center p-2">
+                             <b class="d-flex ms-2">{{ x.title }}</b> 
+                             <time class="d-flex me-3"><b>Due:&nbsp;</b>{{ x.due_date }}</time>
+                      </div>
+
+                      <div class="card-body">
+                          <p>{{ x.description }}</p>
+                          <div class="d-flex justify-content-end mt-4">
+                              <a href="{% url 'edit_task' x.id %}" class="btn btn-warning btn-sm me-2 rounded-sm"><i class="fas fa-edit"></i> Edit</a>
+                              <a href="{% url 'remove_task' x.id %}" class="btn btn-danger btn-sm rounded-sm"><i class="fas fa-trash-alt"></i> Remove</a>
+                          </div>
+                      </div>
+                    
+                  </div>
+                  <br>
+                  {% empty %}
+                  <p> No Task Found !</p>
+              {% endfor %}
+            
+            {% endif %}
+            </div>
+
+            <div class="col-md-4">
+                <div class="card rounded-sm">
+                    <div class="custom-header p-2">Add Task</div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'add_task' %}">
+                          {% csrf_token %}
+                          {% comment %} {{ form }} {% endcomment %}
+                            <!-- Task title-->
+                             <div class="mb-3">
+                                <label for="taskTitle" class="taskTitle">&nbsp;Title*</label>
+                                <input type="text" class="form-control" name="title" placeholder="enter task title" required>
+                             </div>
+
+                             <!-- Description-->
+                             <div class="mb-3">
+                                <label for="taskDescription" class="description">&nbsp;Details*</label>
+                                <textarea class="form-control" id="taskDescription" rows="3" name="description" placeholder="enter task details"></textarea>
+                             </div>
+                            
+                            <!-- Due Date-->
+                             <div class="mb-3">
+                                <label for="taskDueDate" class="taskDueDate">&nbsp;Due Date*</label>
+                                <input type="date" class="form-control" name="due_date">
+                             </div>
+
+                            <!-- ADD button-->
+                             <div class="d-grid">
+                                <button type="submit" class="btn btn-success rounded-sm">Add Task</button>
+                             </div>
+                        </form>
+
+                    </div>
+                    
+
+                </div>
+            </div>
+
+        </div>
+      </div>
+    
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>   
+</body>
+</html>

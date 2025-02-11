@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+</head>
+<body>
+    <!-- Display Django messages -->
+    {% if messages %}
+    <div class="container col-md-5 text-center mt-3">
+        {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                {% comment %} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> {% endcomment %}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+<!-- Main login -->
+
+    <div class="container">
+        <div class="row mt-6">
+            <div class="col-md-4 mt-4 mx-auto shadow">
+                <h2 class="mt-2 mb-5 text-center">Login</h2>
+                
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="Input1" class="form-label"><strong>Username/Email:</strong></label>
+                        <input type="text" class="form-control" id="Input1" name="uemail" placeholder="enter username or email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Input2" class="form-label"><strong>Password:</strong></label>
+                        <input type="password" class="form-control" id="Input2" name="upass" placeholder="enter password">
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between">
+                        <input type="submit" class="btn btn-success" value="Login">
+                        <a href="#" class="mt-2 me-1" style="text-decoration:none;"><small>forgot password?</small></a>
+                    </div>
+                    <hr>
+
+                    <div class="mb-3">
+                        <p>New user?&nbsp;&nbsp;<a href="/register" style="text-decoration:none;"><small>Register</small></a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        
+
+</body>
+</html>
